@@ -29,7 +29,7 @@ export default function AdminDashboard() {
   const fetchListings = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/api/listings", {
+      const res = await fetch("https://vercel.com/nishchal-sachans-projects/helpkey-backend/5ucL15Uur9ntPwBmjW3rq73vHZeY/api/listings", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
