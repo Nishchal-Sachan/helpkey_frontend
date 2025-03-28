@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -26,15 +26,6 @@ export default function AddListing() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Check if user is logged in
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Unauthorized! Please log in first.");
-      router.push("/login"); // Redirect to login page if not logged in
-    }
-  }, [router]);
-
   // Hardcoded lists for dropdowns
   const amenitiesList = [
     "WiFi", "Swimming Pool", "Air Conditioning", "Parking", "Fitness Center",
@@ -59,17 +50,10 @@ export default function AddListing() {
     setError(null);
 
     try {
-      const token = localStorage.getItem("token"); // Get JWT from localStorage
-      if (!token) {
-        setError("Unauthorized: No token found. Please login.");
-        return;
-      }
-
-      const res = await fetch("https://vercel.com/nishchal-sachans-projects/helpkey-backend/5ucL15Uur9ntPwBmjW3rq73vHZeY/api/listings", {
+      const res = await fetch("https://helpkey-backend.vercel.app/api/listings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Send token in headers
         },
         body: JSON.stringify(form),
       });
@@ -91,14 +75,18 @@ export default function AddListing() {
 
   return (
     <div className="bg-gray-200 min-h-screen flex flex-col">
-      <div className="bg-custom-gradient lg:h-[75px] h-[75px] pt-3">
+      <div className="bg-custom-gradient h-[75px] pt-3">
         <Navbar />
       </div>
-      <h1 className="text-4xl text-center text-red-600 font-bold py-16">Add New Listing</h1>
+
+      <h1 className="text-4xl text-center text-red-600 font-bold py-10 md:py-16">Add New Listing</h1>
+
       <div className="flex flex-col items-center justify-center px-4 py-10 flex-grow">
         {error && <p className="text-red-500 text-center">{error}</p>}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full lg:w-[495px]">
+
+        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-lg">
           <h2 className="text-3xl font-bold text-center mb-6">Property Details</h2>
+
           <form className="px-3" onSubmit={handleSubmit}>
             <input type="text" name="title" placeholder="Title" value={form.title} onChange={handleChange} required className="w-full p-2 mb-4 border" />
             <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} required className="w-full p-2 mb-4 border" />
@@ -145,8 +133,10 @@ export default function AddListing() {
             </button>
           </form>
         </div>
+
         <Contact />
       </div>
+
       <Footer />
     </div>
   );
