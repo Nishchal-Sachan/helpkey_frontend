@@ -196,8 +196,10 @@ export default function Navbar() {
                             </ul>
                         )}
                     </li>
+                    
                     <li><Link href="/recruitment" onClick={() => setIsMenuOpen(false)}>Recruitment</Link></li>
                     <li><Link href="/contactus" onClick={() => setIsMenuOpen(false)}>Contact Us</Link></li>
+                    <li><Link href="/admin" onClick={() => setIsMenuOpen(false)}>Admin</Link></li>
                     <li><Link href="https://play.google.com/store/apps/details?id=com.helpkey.services" onClick={() => setIsMenuOpen(false)}>Application Download</Link></li>
                 </ul>
             </div>
