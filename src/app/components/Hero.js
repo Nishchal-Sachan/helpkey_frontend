@@ -56,10 +56,10 @@ export default function Hero() {
 
                         <Navbar />
                         {/* for laptop view */}
-                        <div className="hidden md:flex justify-center lg:my-28 my-5 ">
-                            <div className="bg-gray-200 px-4 lg:rounded-full shadow-lg lg:w-full w-[310px] lg:h-[110px] h-[290px] lg:max-w-6xl">
-                                {/* Form for searching hotels */}
-                                <div className="flex items-center grid grid-cols-1 xl:grid xl:grid-cols-12">
+                        {/* <div className="hidden md:flex justify-center lg:my-28 my-5 ">
+                            <div className="bg-gray-200 px-4 lg:rounded-full shadow-lg lg:w-full w-[310px] lg:h-[110px] h-[290px] lg:max-w-6xl"> */}
+                        {/* Form for searching hotels */}
+                        {/* <div className="flex items-center grid grid-cols-1 xl:grid xl:grid-cols-12">
                                     <div className="col-span-3 lg:ml-10">
                                         <div className="mt-2 text-l font-bold lg:ml-2">Location</div>
                                         <input
@@ -105,7 +105,66 @@ export default function Hero() {
                                     </div>
                                 </div>
                             </div>
+                        </div> */}
+                        <div className="hidden md:flex justify-center my-5 lg:my-28">
+                            <div className="bg-gray-200 px-4 py-4 lg:py-0 shadow-lg rounded-3xl w-[310px] lg:w-full lg:max-w-6xl">
+                                {/* Search Form */}
+                                <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-12 lg:gap-4 items-center">
+
+                                    {/* Location */}
+                                    <div className="lg:col-span-3">
+                                        <label className="block font-bold text-lg mb-1">Location</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter Your City..."
+                                            className="w-full lg:w-[230px] px-4 py-2 border rounded-xl placeholder-gray-600"
+                                            onChange={(e) => setCity(e.target.value)}
+                                        />
+                                    </div>
+
+                                    {/* Check-in */}
+                                    <div className="lg:col-span-2">
+                                        <label className="block font-bold text-lg mb-1">Check in</label>
+                                        <input
+                                            type="date"
+                                            className="w-full lg:w-[180px] px-4 py-2 border rounded-xl bg-white"
+                                        />
+                                    </div>
+
+                                    {/* Check-out */}
+                                    <div className="lg:col-span-2">
+                                        <label className="block font-bold text-lg mb-1">Check out</label>
+                                        <input
+                                            type="date"
+                                            className="w-full lg:w-[180px] px-4 py-2 border rounded-xl bg-white"
+                                        />
+                                    </div>
+
+                                    {/* Guests */}
+                                    <div className="lg:col-span-2">
+                                        <label className="block font-bold text-lg mb-1">Guest</label>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            placeholder="Guests"
+                                            className="w-full lg:w-[230px] px-4 py-2 border rounded-xl placeholder-gray-600"
+                                        />
+                                    </div>
+
+                                    {/* Search Button */}
+                                    <div className="lg:col-span-3 flex justify-center lg:justify-end items-end">
+                                        <button
+                                            className="bg-purple-500 text-white font-bold rounded-full w-full lg:w-auto lg:px-10 px-4 py-3 lg:py-5"
+                                            onClick={() => searchHotelByCity(city)}
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
+
 
                         {/* for mobile view */}
                         <div className="lg:hidden flex justify-center my-24 ">

@@ -17,7 +17,7 @@ export default function Navbar() {
         <>
             <div className="flex lg:justify-evenly  justify-between items-center px-4 relative z-10">
                 {/* Logo */}
-                <img src="logo.png" alt="Logo" className="w-12 h-12" />
+                <img src="/logo.png" alt="Logo" className="w-12 h-12" />
 
                 {/* Navbar links for large screens */}
                 <ul className="hidden md:flex space-x-10 text-xl text-white font-medium">
