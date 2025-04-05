@@ -46,6 +46,28 @@ export default function AdminDashboard() {
       setLoading((prev) => ({ ...prev, bookings: false }));
     }
   };
+  const updateBookingStatus = async (bookingId, status) => {
+    try {
+      const response = await fetch(`https://helpkey-backend.vercel.app/api/bookings/${bookingId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update booking status');
+      }
+  
+      console.log(`Booking ${bookingId} updated to ${status}`);
+      await fetchBookings(); // 👈 Refresh the bookings after update
+    } catch (error) {
+      console.error('Error updating booking status:', error);
+    }
+  };
+  
+
 
   return (
     <div>
@@ -136,18 +158,19 @@ export default function AdminDashboard() {
                   <div className="mt-2 flex gap-2">
                     <button
                       className="bg-green-500 text-white px-3 py-1 md:px-4 md:py-2 rounded"
-                      onClick={() => console.log(`Accept ${booking.id}`)}
+                      onClick={() => updateBookingStatus(booking.id, "Accepted")}
                     >
                       Accept
                     </button>
                     <button
                       className="bg-red-500 text-white px-3 py-1 md:px-4 md:py-2 rounded"
-                      onClick={() => console.log(`Reject ${booking.id}`)}
+                      onClick={() => updateBookingStatus(booking.id, "Rejected")}
                     >
                       Reject
                     </button>
                   </div>
                 )}
+
               </li>
             ))}
           </ul>
