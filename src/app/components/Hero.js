@@ -26,7 +26,7 @@ export default function Hero() {
 
     // Function to search for hotels by city
     const searchHotelByCity = (city) => {
-        window.open("https://helpkeywebapp.vercel.app/?city=" + city, "_self"); // Replace with your deployed app's URL
+        window.open("https://helpkey-webapp.vercel.app/?location=" + city, "_self"); // Replace with your deployed app's URL
     };
     useEffect(() => {
         const interval = setInterval(() => {
