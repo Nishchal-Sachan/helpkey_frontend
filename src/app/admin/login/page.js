@@ -22,6 +22,7 @@ export default function AdminLogin() {
       const res = await fetch("https://helpkey-backend.vercel.app/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // ✅ include cookies
         body: JSON.stringify(form),
       });
   

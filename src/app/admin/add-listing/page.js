@@ -67,12 +67,6 @@ export default function AddListing() {
     setError(null);
   
     try {
-      const token = localStorage.getItem("token"); // Get JWT token
-  
-      if (!token) {
-        throw new Error("You must be logged in to add a listing.");
-      }
-  
       const finalData = {
         ...form,
         hotelDetails: form.property_type === "Hotel" ? hotelDetails : null,
@@ -82,8 +76,8 @@ export default function AddListing() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // 🔐 Pass token to backend
         },
+        credentials: "include", // 👈 Send cookies
         body: JSON.stringify(finalData),
       });
   
@@ -101,6 +95,7 @@ export default function AddListing() {
       setLoading(false);
     }
   };
+  
   
 
   return (

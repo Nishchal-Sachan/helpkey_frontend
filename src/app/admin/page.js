@@ -16,25 +16,24 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        router.push("/admin/signup");
-        return;
-      }
-
       try {
         const res = await fetch("https://helpkey-backend.vercel.app/api/authuser", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ token }),
+          credentials: "include", // send HTTP-only cookie
         });
 
         const data = await res.json();
         if (!data.success || !data.isAuthenticated) {
           router.push("/admin/signup");
+          return;
         }
+
+        // Continue loading dashboard
+        fetchListings();
+        fetchBookings();
       } catch (err) {
         console.error("Auth check failed:", err);
         router.push("/admin/signup");
@@ -42,9 +41,7 @@ export default function AdminDashboard() {
     };
 
     checkAuth();
-    fetchListings();
-    fetchBookings();
-  }, []);
+  }, [router]);
 
   const fetchListings = async () => {
     try {
@@ -77,23 +74,36 @@ export default function AdminDashboard() {
   const updateBookingStatus = async (bookingId, status) => {
     try {
       const response = await fetch(`https://helpkey-backend.vercel.app/api/bookings/${bookingId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update booking status');
+        throw new Error("Failed to update booking status");
       }
 
       console.log(`Booking ${bookingId} updated to ${status}`);
       await fetchBookings();
     } catch (error) {
-      console.error('Error updating booking status:', error);
+      console.error("Error updating booking status:", error);
     }
   };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("https://helpkey-backend.vercel.app/api/admin/logout", {
+        method: "POST",
+        credentials: "include", // ⬅️ to send the cookie
+      });
+  
+      router.push("/admin/signup");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      router.push("/admin/signup"); // fallback redirect
+    }
+  };
+  
 
   return (
     <div>
@@ -114,10 +124,7 @@ export default function AdminDashboard() {
 
           <button
             className="bg-red-600 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg mt-2 sm:mt-0 w-full sm:w-auto"
-            onClick={() => {
-              localStorage.removeItem("token");
-              router.push("/admin/signup");
-            }}
+            onClick={handleLogout}
           >
             Logout
           </button>
