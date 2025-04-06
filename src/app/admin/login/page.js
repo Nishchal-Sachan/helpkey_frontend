@@ -60,7 +60,7 @@ export default function AdminLogin() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-        <p>dont have account?<Link href={"/admin/signup"}>Signup</Link></p>
+        <p>dont have account?<Link href={"/admin/signup"}>Login</Link></p>
         
       </div>
     </div>

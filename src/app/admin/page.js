@@ -100,7 +100,7 @@ export default function AdminDashboard() {
       router.push("/admin/signup");
     } catch (error) {
       console.error("Logout failed:", error);
-      router.push("/admin/signup"); // fallback redirect
+      router.push("/admin/login"); // fallback redirect
     }
   };
   
