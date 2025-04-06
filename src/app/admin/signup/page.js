@@ -30,7 +30,7 @@ export default function AdminSignup() {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:3000/api/admin/signup", {
+      const res = await fetch("https://helpkey-backend.vercel.app/api/admin/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

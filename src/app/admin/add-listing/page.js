@@ -78,7 +78,7 @@ export default function AddListing() {
         hotelDetails: form.property_type === "Hotel" ? hotelDetails : null,
       };
   
-      const res = await fetch("/api/admin/listings", {
+      const res = await fetch("https://helpkey-backend.vercel.app/api/admin/listings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
