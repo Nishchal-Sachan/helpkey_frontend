@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Contact from "@/app/components/Contact";
+import Link from "next/link";
 
 export default function AdminSignup() {
   const router = useRouter();
