@@ -65,27 +65,34 @@ export default function AddListing() {
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
-
+  
     try {
+      const token = localStorage.getItem("token"); // Get JWT token
+  
+      if (!token) {
+        throw new Error("You must be logged in to add a listing.");
+      }
+  
       const finalData = {
         ...form,
         hotelDetails: form.property_type === "Hotel" ? hotelDetails : null,
       };
-
-      const res = await fetch("https://helpkey-backend.vercel.app/api/listings", {
+  
+      const res = await fetch("/api/admin/listings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // 🔐 Pass token to backend
         },
         body: JSON.stringify(finalData),
       });
-
+  
       const data = await res.json();
-
-      if (!res.ok) {
+  
+      if (!res.ok || !data.success) {
         throw new Error(data.error || "Failed to add listing");
       }
-
+  
       alert("Listing added successfully!");
       router.push("/admin");
     } catch (err) {
@@ -94,6 +101,7 @@ export default function AddListing() {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="bg-gray-200 min-h-screen flex flex-col">

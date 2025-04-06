@@ -17,25 +17,29 @@ export default function AdminLogin() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
+  
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
+  
       const result = await res.json();
       if (!result.success) throw new Error(result.error);
-
+  
+      // ✅ Step 2: Store token in localStorage
+      localStorage.setItem("admin_token", result.token);
+  
       alert("Login successful!");
-      router.push("/admin"); // Redirect after successful login
+      router.push("/admin"); // Redirect after login
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="bg-gray-200 min-h-screen flex flex-col items-center justify-center px-4">
