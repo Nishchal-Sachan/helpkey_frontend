@@ -44,8 +44,14 @@ export default function AdminSignup() {
       alert("Admin registered successfully!");
       router.push("/admin");
     } catch (err) {
-      setError(err.message);
-    } finally {
+      if (err.message === "Admin already exists") {
+        alert("You're already registered. Please log in.");
+        router.push("/admin"); // or "/admin/login" if that's the correct route
+      } else {
+        setError(err.message);
+      }
+    }
+     finally {
       setLoading(false);
     }
   };
