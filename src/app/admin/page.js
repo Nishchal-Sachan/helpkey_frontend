@@ -18,7 +18,7 @@ export default function AdminDashboard() {
     const checkAuth = async () => {
       try {
         const res = await fetch("https://helpkey-backend.vercel.app/api/authuser", {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
