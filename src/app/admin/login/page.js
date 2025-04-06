@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -59,6 +60,8 @@ export default function AdminLogin() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+        <p>dont have account?<Link href={"/admin/signup"}>Signup</Link></p>
+        
       </div>
     </div>
   );

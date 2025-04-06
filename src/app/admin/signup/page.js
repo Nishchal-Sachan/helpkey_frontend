@@ -82,6 +82,7 @@ export default function AdminSignup() {
               {loading ? "Signing up..." : "Sign Up"}
             </button>
           </form>
+          <p>already have account?<Link href={"/admin/login"}>Signup</Link></p>
         </div>
 
         <Contact />

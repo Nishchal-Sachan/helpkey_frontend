@@ -27,7 +27,7 @@ export default function AdminDashboard() {
 
         const data = await res.json();
         if (!data.success || !data.isAuthenticated) {
-          router.push("/admin/signup");
+          router.push("/admin/login");
           return;
         }
 
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
         fetchBookings();
       } catch (err) {
         console.error("Auth check failed:", err);
-        router.push("/admin/signup");
+        router.push("/admin/login");
       }
     };
 
