@@ -93,7 +93,7 @@ export default function Navbar() {
                     </li>
                     <li><Link href="/recruitment">Recruitment</Link></li>
                     <li><Link href="/contactus">Contact Us</Link></li>
-                    <Link href="/admin" className="hover:underline">Admin</Link>
+                    <Link href="/admin" className="hover:underline">Add your property</Link>
                     <li><Link href="https://play.google.com/store/apps/details?id=com.helpkey.services">Application Download</Link></li>
                 </ul>
 
@@ -196,10 +196,10 @@ export default function Navbar() {
                             </ul>
                         )}
                     </li>
-                    
+
                     <li><Link href="/recruitment" onClick={() => setIsMenuOpen(false)}>Recruitment</Link></li>
                     <li><Link href="/contactus" onClick={() => setIsMenuOpen(false)}>Contact Us</Link></li>
-                    <li><Link href="/admin" onClick={() => setIsMenuOpen(false)}>Admin</Link></li>
+                    <li><Link href="/admin" onClick={() => setIsMenuOpen(false)}>Add your property </Link></li>
                     <li><Link href="https://play.google.com/store/apps/details?id=com.helpkey.services" onClick={() => setIsMenuOpen(false)}>Application Download</Link></li>
                 </ul>
             </div>
