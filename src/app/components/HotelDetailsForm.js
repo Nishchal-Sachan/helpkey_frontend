@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
-export default function HotelDetailsForm({ formData, setFormData, nextStep, prevStep }) {
+export default function HotelDetailsForm({ hotelDetails, setHotelDetails, handleSubmit, prevStep }) {
   const [hotelData, setHotelData] = useState({
-    num_rooms: formData.num_rooms || "",
-    room_types: formData.room_types || { AC: 0, "Non-AC": 0, Other: 0 },
+    num_rooms: hotelDetails.num_rooms || "",
+    room_types: hotelDetails.room_types || { AC: 0, "Non-AC": 0, Other: 0 },
   });
 
   const handleChange = (e) => {
@@ -20,8 +20,8 @@ export default function HotelDetailsForm({ formData, setFormData, nextStep, prev
   };
 
   const handleNext = () => {
-    setFormData({ ...formData, ...hotelData });
-    nextStep();
+    setHotelDetails({ ...hotelDetails, ...hotelData });
+    handleSubmit();
   };
 
   return (
@@ -54,7 +54,7 @@ export default function HotelDetailsForm({ formData, setFormData, nextStep, prev
 
       <div className="flex justify-between mt-6">
         <button onClick={prevStep} className="py-2 px-4 bg-gray-500 text-white">Back</button>
-        <button onClick={handleNext} className="py-2 px-4 bg-red-600 text-white">Next</button>
+        <button onClick={handleNext} className="py-2 px-4 bg-red-600 text-white">Submit</button>
       </div>
     </div>
   );

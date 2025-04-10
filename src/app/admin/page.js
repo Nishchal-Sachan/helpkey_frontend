@@ -17,7 +17,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("https://helpkey-backend.vercel.app/api/authuser", {
+        const res = await fetch("https://helpkey-backend.onrender.com/api/authuser", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function AdminDashboard() {
 
   const fetchListings = async () => {
     try {
-      const res = await fetch("https://helpkey-backend.vercel.app/api/listings");
+      const res = await fetch("https://helpkey-backend.onrender.com/api/listings");
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const data = await res.json();
       if (!data.success) throw new Error(data.error || "Failed to fetch listings");
@@ -59,7 +59,14 @@ export default function AdminDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch("https://helpkey-backend.vercel.app/api/bookings");
+      const res = await fetch("https://helpkey-backend.onrender.com/api/bookings", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // 👈 This is the fix
+      });
+  
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const data = await res.json();
       if (!data.success) throw new Error(data.error || "Failed to fetch bookings");
@@ -70,29 +77,33 @@ export default function AdminDashboard() {
       setLoading((prev) => ({ ...prev, bookings: false }));
     }
   };
+  
+  
 
   const updateBookingStatus = async (bookingId, status) => {
     try {
-      const response = await fetch(`https://helpkey-backend.vercel.app/api/bookings/${bookingId}`, {
+      const response = await fetch(`https://helpkey-backend.onrender.com/api/bookings/${bookingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
+        credentials: "include", // 👈 Include cookie for auth
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to update booking status");
       }
-
+  
       console.log(`Booking ${bookingId} updated to ${status}`);
       await fetchBookings();
     } catch (error) {
       console.error("Error updating booking status:", error);
     }
   };
+  
 
   const handleLogout = async () => {
     try {
-      await fetch("https://helpkey-backend.vercel.app/api/admin/logout", {
+      await fetch("https://helpkey-backend.onrender.com/api/admin/logout", {
         method: "POST",
         credentials: "include", // ⬅️ to send the cookie
       });

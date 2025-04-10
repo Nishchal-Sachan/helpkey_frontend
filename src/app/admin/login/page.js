@@ -20,7 +20,7 @@ export default function AdminLogin() {
     setError(null);
   
     try {
-      const res = await fetch("https://helpkey-backend.vercel.app/api/admin/login", {
+      const res = await fetch("https://helpkey-backend.onrender.com/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // ✅ include cookies
@@ -60,7 +60,7 @@ export default function AdminLogin() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-        <p>dont have account?<Link href={"/admin/signup"}>Login</Link></p>
+        <p>dont have account?<Link href={"/admin/signup"}>Signup</Link></p>
         
       </div>
     </div>

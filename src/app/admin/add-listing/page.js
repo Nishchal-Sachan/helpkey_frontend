@@ -65,14 +65,15 @@ export default function AddListing() {
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
-  
+    
     try {
+      console.log("Submitting listing...");
       const finalData = {
         ...form,
         hotelDetails: form.property_type === "Hotel" ? hotelDetails : null,
       };
   
-      const res = await fetch("https://helpkey-backend.vercel.app/api/admin/listings", {
+      const res = await fetch("https://helpkey-backend.onrender.com/api/listings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

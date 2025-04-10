@@ -50,7 +50,7 @@ export default function EditListing() {
 
   const fetchListing = async () => {
     try {
-      const res = await fetch(`https://helpkey-backend.vercel.app/api/listings/${id}`);
+      const res = await fetch(`https://helpkey-backend.onrender.com/api/listings/${id}`);
       if (!res.ok) throw new Error("Failed to fetch listing");
 
       const data = await res.json();
@@ -99,7 +99,7 @@ export default function EditListing() {
         hotelDetails: form.property_type === "Hotel" ? hotelDetails : null,
       };
 
-      const res = await fetch(`https://helpkey-backend.vercel.app/api/listings/${id}`, {
+      const res = await fetch(`https://helpkey-backend.onrender.com/api/listings/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

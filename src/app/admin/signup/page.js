@@ -31,7 +31,7 @@ export default function AdminSignup() {
     setError(null);
 
     try {
-      const res = await fetch("https://helpkey-backend.vercel.app/api/admin/signup", {
+      const res = await fetch("https://helpkey-backend.onrender.com/api/admin/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function AdminSignup() {
               {loading ? "Signing up..." : "Sign Up"}
             </button>
           </form>
-          <p>already have account?<Link href={"/admin/login"}>Signup</Link></p>
+          <p>already have account?<Link href={"/admin/login"}>Login</Link></p>
         </div>
 
         <Contact />
