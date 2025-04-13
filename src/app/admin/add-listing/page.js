@@ -222,7 +222,7 @@ export default function AddListingForm() {
     };
   
     try {
-      const res = await fetch('http://localhost:5000/api/listings', {
+      const res = await fetch('https://helpkey-backend.onrender.com/api/listings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
