@@ -108,7 +108,7 @@ export default function AdminDashboard() {
         credentials: "include", // ⬅️ to send the cookie
       });
   
-      router.push("/admin/signup");
+      router.push("/admin/login");
     } catch (error) {
       console.error("Logout failed:", error);
       router.push("/admin/login"); // fallback redirect
