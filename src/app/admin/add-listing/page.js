@@ -175,6 +175,7 @@
 
 import { useState } from "react";
 
+
 // Placeholder imports – replace these with your actual detail components
 import HotelDetailsForm from "./HotelDetailsForm";
 import HostelDetailsForm from "./HostelDetailsForm";
@@ -195,8 +196,18 @@ export default function AddListingForm() {
     description: "",
     category: "",
     property_type: "",
+    location: "",
+    image_url: "",
+    amenities: [],
+    beds: 0,
+    bathrooms: 0,
+    guests: 0,
+    place_category: "",
+    discount: 0,
   });
   const [categoryDetails, setCategoryDetails] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
@@ -213,40 +224,102 @@ export default function AddListingForm() {
   //   console.log("Submitting listing:", finalData);
   //   // Add your API submission logic here
   // };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    const listingData = {
-      ...form,
-      details: categoryDetails, // all specific form data goes here
-    };
-  
+
+
+
+
+  const handleSubmit = async () => {
     try {
-      const res = await fetch('https://helpkey-backend.onrender.com/api/listings', {
-        method: 'POST',
+      setLoading(true);
+      setErrorMessage("");  // Reset previous errors
+
+      const payload = {
+        ...form,
+        ...categoryDetails,
+        image_url: form.imageUrls || "", // Ensure correct key
+      };
+      
+      // Fix required fields check
+      if (
+        !payload.title?.trim() ||
+        !payload.location?.trim() ||
+        !payload.property_type?.trim() ||
+        !payload.place_category?.trim()
+      ) {
+        setErrorMessage("Please fill all required fields.");
+        setLoading(false);
+        return;
+      }
+      
+      // If hotel, add hotelDetails
+      if (payload.property_type.toLowerCase() === "hotel" && payload.roomDetails) {
+        payload.hotelDetails = payload.roomDetails;
+        delete payload.roomDetails;
+      }
+      console.log("Payload:", payload);
+
+
+      const response = await fetch("https://helpkey-backend.onrender.com/api/listings", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(listingData),
-        credentials: 'include',
+        body: JSON.stringify(payload), // Send the data as JSON
+        credentials: "include", // Ensure to send the HTTP-only cookie
       });
-  
-      const result = await res.json();
-  
-      if (!res.ok) throw new Error(result.message || 'Failed to add listing');
-  
-      alert('Listing added successfully!');
-    } catch (err) {
-      console.error('Error:', err);
-      alert(err.message);
+
+      if (response.ok) {
+        const data = await response.json(); // Get JSON response
+        if (data.success) {
+          alert("Listing created successfully!");
+
+          // Reset form
+          setForm({
+            title: "",
+            description: "",
+            category: "",
+            property_type: "",
+            location: "",
+            image_url: "",
+            amenities: [],
+            beds: 0,
+            bathrooms: 0,
+            guests: 0,
+            place_category: "",
+            discount: 0,
+          });
+          setCategoryDetails({});
+          setStep(1);
+          Router.push("/admin");
+        } else {
+          setErrorMessage("Listing creation failed. Please try again.");
+        }
+      } else {
+        if (response.status === 401) {
+          setErrorMessage("Unauthorized. Please log in again.");
+        } else {
+          setErrorMessage("Something went wrong while submitting.");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Something went wrong while submitting.");
+    } finally {
+      setLoading(false);
     }
   };
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
 
   const renderPropertyTypeForm = () => {
     console.log("Selected property type:", form.property_type);
@@ -336,9 +409,9 @@ export default function AddListingForm() {
           </div>
         );
         console.log("Default case hit");
-      return (
-        <div>Nothing matched</div>
-      );
+        return (
+          <div>Nothing matched</div>
+        );
     }
   };
 
@@ -370,22 +443,7 @@ export default function AddListingForm() {
                 className="w-full border border-gray-300 p-2 rounded"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium">Category</label>
-              <select
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                className="w-full border border-gray-300 p-2 rounded"
-              >
-                <option value="">Select Category</option>
-                <option value="luxury">Luxury</option>
-                <option value="budget">Budget</option>
-                <option value="business">Business</option>
-                <option value="family">Family</option>
-                <option value="adventure">Adventure</option>
-              </select>
-            </div>
+
             <div>
               <label className="block text-sm font-medium">Property Type</label>
               <select
@@ -403,6 +461,22 @@ export default function AddListingForm() {
                 <option value="Hotel">Hotel</option>
                 <option value="Hostel">Hostel</option>
                 {/* <option value="Resort">Resort</option> */}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium">Category</label>
+              <select
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                className="w-full border border-gray-300 p-2 rounded"
+              >
+                <option value="">Select Category</option>
+                <option value="luxury">Luxury</option>
+                <option value="budget">Budget</option>
+                <option value="business">Business</option>
+                <option value="family">Family</option>
+                <option value="adventure">Adventure</option>
               </select>
             </div>
             <button

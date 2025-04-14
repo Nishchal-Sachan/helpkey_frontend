@@ -45,7 +45,13 @@ export default function AdminDashboard() {
 
   const fetchListings = async () => {
     try {
-      const res = await fetch("https://helpkey-backend.onrender.com/api/listings");
+      const res = await fetch("https://helpkey-backend.onrender.com/api/listings/admin/listings", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // 👈 This is the fix
+      });
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const data = await res.json();
       if (!data.success) throw new Error(data.error || "Failed to fetch listings");
