@@ -97,8 +97,6 @@
 //     }
 //   };
 
-
-
 //   return (
 //     <div className="bg-gray-200 min-h-screen flex flex-col">
 //       <div className="bg-custom-gradient h-[75px] pt-3">
@@ -175,7 +173,6 @@
 
 import { useState } from "react";
 
-
 // Placeholder imports – replace these with your actual detail components
 import HotelDetailsForm from "./HotelDetailsForm";
 import HostelDetailsForm from "./HostelDetailsForm";
@@ -207,7 +204,7 @@ export default function AddListingForm() {
   });
   const [categoryDetails, setCategoryDetails] = useState({});
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
@@ -216,57 +213,51 @@ export default function AddListingForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-
-
-
   // const handleSubmit = () => {
   //   const finalData = { ...form, ...categoryDetails };
   //   console.log("Submitting listing:", finalData);
   //   // Add your API submission logic here
   // };
 
-
-
-
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      setErrorMessage("");  // Reset previous errors
+      setErrorMessage(""); // Reset previous errors
 
       const payload = {
         ...form,
         ...categoryDetails,
         image_url: form.imageUrls || "", // Ensure correct key
       };
-      
+
       // Fix required fields check
-      if (
-        !payload.title?.trim() ||
-        !payload.location?.trim() ||
-        !payload.property_type?.trim() ||
-        !payload.place_category?.trim()
-      ) {
+      if (!payload.title?.trim() || !payload.property_type?.trim()) {
         setErrorMessage("Please fill all required fields.");
         setLoading(false);
         return;
       }
-      
+
       // If hotel, add hotelDetails
-      if (payload.property_type.toLowerCase() === "hotel" && payload.roomDetails) {
+      if (
+        payload.property_type.toLowerCase() === "hotel" &&
+        payload.roomDetails
+      ) {
         payload.hotelDetails = payload.roomDetails;
         delete payload.roomDetails;
       }
       console.log("Payload:", payload);
 
-
-      const response = await fetch("https://helpkey-backend.onrender.com/api/listings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload), // Send the data as JSON
-        credentials: "include", // Ensure to send the HTTP-only cookie
-      });
+      const response = await fetch(
+        "https://helpkey-backend.onrender.com/api/listings",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload), // Send the data as JSON
+          credentials: "include", // Ensure to send the HTTP-only cookie
+        }
+      );
 
       if (response.ok) {
         const data = await response.json(); // Get JSON response
@@ -309,21 +300,8 @@ export default function AddListingForm() {
     }
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
   const renderPropertyTypeForm = () => {
     console.log("Selected property type:", form.property_type);
-
 
     switch (form.property_type.toLowerCase()) {
       case "hotel":
@@ -401,17 +379,27 @@ export default function AddListingForm() {
       default:
         return (
           <div className="text-center">
-            <p className="mb-4 text-lg font-medium">No additional details required for this type.</p>
+            <p className="mb-4 text-lg font-medium">
+              No additional details required for this type.
+            </p>
             <div className="flex gap-4 justify-center">
-              <button onClick={prevStep} className="px-4 py-2 bg-gray-400 text-white rounded">Back</button>
-              <button onClick={handleSubmit} className="px-4 py-2 bg-red-600 text-white rounded">Submit</button>
+              <button
+                onClick={prevStep}
+                className="px-4 py-2 bg-gray-400 text-white rounded"
+              >
+                Back
+              </button>
+              <button
+                onClick={handleSubmit}
+                className="px-4 py-2 bg-red-600 text-white rounded"
+              >
+                Submit
+              </button>
             </div>
           </div>
         );
         console.log("Default case hit");
-        return (
-          <div>Nothing matched</div>
-        );
+        return <div>Nothing matched</div>;
     }
   };
 
@@ -482,7 +470,12 @@ export default function AddListingForm() {
             <button
               onClick={nextStep}
               className="px-4 py-2 bg-blue-600 text-white rounded"
-              disabled={!form.title || !form.description || !form.category || !form.property_type}
+              disabled={
+                !form.title ||
+                !form.description ||
+                !form.category ||
+                !form.property_type
+              }
             >
               Next
             </button>
@@ -490,7 +483,6 @@ export default function AddListingForm() {
         )}
 
         {step === 2 && renderPropertyTypeForm()}
-
       </div>
       <Contact />
       <Footer />
