@@ -107,9 +107,9 @@ export default function Hero() {
                             </div>
                         </div> */}
                         <div className="hidden md:flex justify-center my-5 lg:my-28">
-                            <div className="bg-gray-200 px-4 py-4 lg:py-0 shadow-lg rounded-3xl w-[310px] lg:w-full lg:max-w-6xl">
+                            <div className="bg-gray-200 px-3 py-4 lg:py-0 shadow-lg rounded-3xl w-[310px] lg:w-full lg:max-w-6xl">
                                 {/* Search Form */}
-                                <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-12 lg:gap-4 items-center">
+                                <div className="grid grid-cols-1 gap-y-4 p-5 lg:grid-cols-12 lg:gap-4 items-center">
 
                                     {/* Location */}
                                     <div className="lg:col-span-3">
@@ -117,17 +117,17 @@ export default function Hero() {
                                         <input
                                             type="text"
                                             placeholder="Enter Your City..."
-                                            className="w-full lg:w-[230px] px-4 py-2 border rounded-xl placeholder-gray-600"
+                                            className="w-full px-4 py-2 border rounded-xl placeholder-gray-600"
                                             onChange={(e) => setCity(e.target.value)}
                                         />
                                     </div>
 
                                     {/* Check-in */}
-                                    <div className="lg:col-span-2">
+                                    <div className="lg:col-span-2 m-2 gap-1">
                                         <label className="block font-bold text-lg mb-1">Check in</label>
                                         <input
                                             type="date"
-                                            className="w-full lg:w-[180px] px-4 py-2 border rounded-xl bg-white"
+                                            className="w-full px-4 py-2 border rounded-xl bg-white"
                                         />
                                     </div>
 
@@ -136,7 +136,7 @@ export default function Hero() {
                                         <label className="block font-bold text-lg mb-1">Check out</label>
                                         <input
                                             type="date"
-                                            className="w-full lg:w-[180px] px-4 py-2 border rounded-xl bg-white"
+                                            className="w-full px-4 py-2 border rounded-xl bg-white"
                                         />
                                     </div>
 
@@ -147,7 +147,7 @@ export default function Hero() {
                                             type="number"
                                             min="1"
                                             placeholder="Guests"
-                                            className="w-full lg:w-[230px] px-4 py-2 border rounded-xl placeholder-gray-600"
+                                            className="w-full px-4 py-2 border rounded-xl placeholder-gray-600"
                                         />
                                     </div>
 
@@ -164,6 +164,7 @@ export default function Hero() {
                                 </div>
                             </div>
                         </div>
+
 
 
                         {/* for mobile view */}
