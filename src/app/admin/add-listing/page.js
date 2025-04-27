@@ -422,7 +422,7 @@ export default function AddListingForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-        credentials: 'include',
+        credentials: 'include', // This ensures the browser sends the cookies with the request
       });
   
       const data = await response.json();
@@ -436,6 +436,7 @@ export default function AddListingForm() {
       console.error("Error submitting form:", error);
     }
   };
+  
   
 
 
