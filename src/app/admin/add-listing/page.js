@@ -420,9 +420,9 @@ export default function AddListingForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Ensure the token is set correctly
         },
         body: JSON.stringify(payload),
+        credentials: 'include',
       });
   
       const data = await response.json();
