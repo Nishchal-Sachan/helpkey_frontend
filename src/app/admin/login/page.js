@@ -23,24 +23,22 @@ export default function AdminLogin() {
       const res = await fetch("https://helpkey-backend.onrender.com/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // ✅ include cookies
+        credentials: "include", // ✅ send cookies
         body: JSON.stringify(form),
       });
   
       const result = await res.json();
       if (!result.success) throw new Error(result.error);
   
-      // ✅ Step 2: Store token in localStorage
-      localStorage.setItem("admin_token", result.token);
-  
       alert("Login successful!");
-      router.push("/admin"); // Redirect after login
+      router.push("/admin"); // ✅ Redirect after login
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+  
   
 
   return (
@@ -60,7 +58,8 @@ export default function AdminLogin() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-        <p>dont have account?<Link href={"/admin/signup"}>Signup</Link></p>
+        <p>Don't have an account? <Link href={"/admin/signup"} className="text-blue-600 underline">Signup</Link></p>
+
         
       </div>
     </div>
