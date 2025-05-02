@@ -9,7 +9,7 @@ export default function AdminLogin() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const baseUrl = "http://localhost:5000/api";
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -20,7 +20,7 @@ export default function AdminLogin() {
     setError(null);
   
     try {
-      const res = await fetch("https://helpkey-backend.onrender.com/api/admin/login", {
+      const res = await fetch(`${baseUrl}/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // ✅ send cookies

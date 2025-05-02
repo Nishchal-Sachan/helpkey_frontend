@@ -14,10 +14,11 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState({ listings: true, bookings: true });
   const [error, setError] = useState({ listings: null, bookings: null });
 
+  const baseUrl = "http://localhost:5000/api";
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("https://helpkey-backend.onrender.com/api/admin/authuser", {
+        const res = await fetch(`${baseUrl}/admin/authuser`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -45,7 +46,7 @@ export default function AdminDashboard() {
 
   const fetchListings = async () => {
     try {
-      const res = await fetch("https://helpkey-backend.onrender.com/api/listings/admin/listings", {
+      const res = await fetch(`${baseUrl}/listings/admin/listings`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +66,7 @@ export default function AdminDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch("https://helpkey-backend.onrender.com/api/bookings", {
+      const res = await fetch(`${baseUrl}/bookings`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -84,11 +85,34 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDelete = async (listingId) => {
+    try {
+      const response = await fetch(`${baseUrl}/listings/${listingId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete listing');
+      }
+  
+      const data = await response.json();
+      console.log('Deleted:', data);
+      alert(`${data.message}`);
+  
+      // ✅ Remove the deleted listing from the UI
+      setListings((prevListings) => prevListings.filter((listing) => listing.id !== listingId));
+    } catch (error) {
+      console.error('Error deleting listing:', error);
+    }
+  };
+  
+
 
 
   const updateBookingStatus = async (bookingId, status) => {
     try {
-      const response = await fetch(`https://helpkey-backend.onrender.com/api/bookings/${bookingId}`, {
+      const response = await fetch(`${baseUrl}/bookings/${bookingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
@@ -109,7 +133,7 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     try {
-      await fetch("https://helpkey-backend.onrender.com/api/admin/logout", {
+      await fetch(`${baseUrl}https://helpkey-backend.onrender.com/api/admin/logout`, {
         method: "POST",
         credentials: "include", // ⬅️ to send the cookie
       });
@@ -192,7 +216,7 @@ export default function AdminDashboard() {
                   </button>
                   <button
                     className="bg-red-500 text-white px-3 py-1 md:px-4 md:py-2 rounded"
-                    onClick={() => console.log(`Delete ${listing.id}`)}
+                    onClick={() => handleDelete(listing.id)}
                   >
                     Delete
                   </button>

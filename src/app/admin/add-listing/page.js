@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Contact from "../../components/Contact";
 
+
 export default function AddListingForm() {
   const [step, setStep] = useState(1);
   const router = useRouter();
@@ -32,6 +33,8 @@ export default function AddListingForm() {
   const prevStep = () => setStep((prev) => prev - 1);
   const [imageFile, setImageFile] = useState(null);
 
+
+  const baseUrl = "http://localhost:5000/api";
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
   };
@@ -134,7 +137,7 @@ export default function AddListingForm() {
         console.log(`${key}:`, val);
       }
   
-      const response = await fetch("https://helpkey-backend.onrender.com/api/listings", {
+      const response = await fetch(`${baseUrl}/listings`, {
         method: "POST",
         body: formData,
         credentials: "include",
