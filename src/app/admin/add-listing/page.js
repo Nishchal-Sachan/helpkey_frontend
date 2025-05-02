@@ -77,27 +77,32 @@ export default function AddListingForm() {
     setLoading(true);
     setErrorMessage(null);
   
-    const payload = {
-      title: form.title,
-      description: form.description,
-      category: form.category,
-      property_type: form.property_type,
-      location: form.location,
-      amenities: form.amenities,
-      beds: form.beds,
-      bathrooms: form.bathrooms,
-      guests: form.guests,
-      place_category: form.placeCategory,
-      discount: form.discount,
-      room_type: form.roomType,
-      number_of_rooms: form.numberOfRooms,
-      floor_no: form.floorNo,
-      villa_details: form.villaDetails,
-      hotel_details: form.hotelDetails,
-      price: form.price,
-    };
+    const {
+      title, description, category, property_type,
+      location, amenities, beds, bathrooms, guests,
+      placeCategory, discount, roomType, numberOfRooms,
+      floorNo, villaDetails, hotelDetails, price
+    } = form;
   
-    console.log("Payload being sent (before FormData):", payload);
+    const payload = {
+      title,
+      description,
+      category,
+      property_type,
+      location,
+      amenities,
+      beds,
+      bathrooms,
+      guests,
+      place_category: placeCategory,
+      discount,
+      room_type: roomType,
+      number_of_rooms: numberOfRooms,
+      floor_no: floorNo,
+      villa_details: villaDetails,
+      hotel_details: hotelDetails,
+      price,
+    };
   
     try {
       const formData = new FormData();
@@ -106,7 +111,11 @@ export default function AddListingForm() {
         const value = payload[key];
         if (value !== undefined && value !== null && value !== "") {
           if (typeof value === "object") {
-            formData.append(key, JSON.stringify(value));
+            try {
+              formData.append(key, JSON.stringify(value));
+            } catch (e) {
+              console.warn(`⚠️ Failed to stringify ${key}:`, value);
+            }
           } else {
             formData.append(key, value);
           }
@@ -116,13 +125,13 @@ export default function AddListingForm() {
       if (imageFile) {
         formData.append("image", imageFile);
       } else {
-        console.warn("⚠️ imageFile is undefined");
+        console.warn("⚠️ imageFile is undefined or not selected");
       }
   
-      // Debug FormData
+      // Debugging formData entries
       console.log("FormData contents:");
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}:`, pair[1]);
+      for (let [key, val] of formData.entries()) {
+        console.log(`${key}:`, val);
       }
   
       const response = await fetch("https://helpkey-backend.onrender.com/api/listings", {
@@ -138,9 +147,10 @@ export default function AddListingForm() {
   
       alert("Listing created successfully!");
       router.push("/admin");
+  
     } catch (error) {
       setErrorMessage(error.message);
-      console.error("Error submitting form:", error);
+      console.error("❌ Error submitting form:", error);
     } finally {
       setLoading(false);
     }

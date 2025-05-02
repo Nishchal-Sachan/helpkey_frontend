@@ -17,7 +17,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("https://helpkey-backend.onrender.com/api/authuser", {
+        const res = await fetch("https://helpkey-backend.onrender.com/api/admin/authuser", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
