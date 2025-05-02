@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Router from "next/router";
+import { useRouter } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import Contact from "../../components/Contact";
 
 export default function AddListingForm() {
   const [step, setStep] = useState(1);
+  const router = useRouter();
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -26,8 +27,15 @@ export default function AddListingForm() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
+  const [imageFile, setImageFile] = useState(null);
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
+
 
   const handleChange = (e) => {
     const { name, value, type, selectedOptions } = e.target;
@@ -64,41 +72,63 @@ export default function AddListingForm() {
   };
 
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    setErrorMessage(null);
   
     const payload = {
       title: form.title,
       description: form.description,
-      category: form.category,  // Assuming category maps to place_category
+      category: form.category,
       property_type: form.property_type,
       location: form.location,
-      image_url: form.imageUrl,  // Ensure this is the correct field
       amenities: form.amenities,
       beds: form.beds,
       bathrooms: form.bathrooms,
       guests: form.guests,
-      place_category: form.placeCategory,  // Ensure this matches what backend expects
+      place_category: form.placeCategory,
       discount: form.discount,
-      room_type: form.roomType,  // Include only if property_type is hotel or hostel
-      number_of_rooms: form.numberOfRooms,  // Include only if property_type is hotel, hostel, or villa
-      floor_no: form.floorNo,  // Include for hotel, hostel, apartment, and villa
-      villa_details: form.villaDetails,  // Include for villa type only
-      hotel_details: form.hotelDetails,  // Include for hotel type only
-      price: form.price,  // Price is assumed to be a numeric value, ensure form sends it as a number
+      room_type: form.roomType,
+      number_of_rooms: form.numberOfRooms,
+      floor_no: form.floorNo,
+      villa_details: form.villaDetails,
+      hotel_details: form.hotelDetails,
+      price: form.price,
     };
   
-    console.log("Payload being sent:", payload);
+    console.log("Payload being sent (before FormData):", payload);
   
     try {
+      const formData = new FormData();
+  
+      for (const key in payload) {
+        const value = payload[key];
+        if (value !== undefined && value !== null && value !== "") {
+          if (typeof value === "object") {
+            formData.append(key, JSON.stringify(value));
+          } else {
+            formData.append(key, value);
+          }
+        }
+      }
+  
+      if (imageFile) {
+        formData.append("image", imageFile);
+      } else {
+        console.warn("⚠️ imageFile is undefined");
+      }
+  
+      // Debug FormData
+      console.log("FormData contents:");
+      for (let pair of formData.entries()) {
+        console.log(`${pair[0]}:`, pair[1]);
+      }
+  
       const response = await fetch("https://helpkey-backend.onrender.com/api/listings", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-        credentials: 'include', // This ensures the browser sends the cookies with the request
+        body: formData,
+        credentials: "include",
       });
   
       const data = await response.json();
@@ -106,14 +136,17 @@ export default function AddListingForm() {
         throw new Error(data.error || "Something went wrong");
       }
   
-      // Handle successful response
-      console.log("Listing created successfully", data);
+      alert("Listing created successfully!");
+      router.push("/admin");
     } catch (error) {
+      setErrorMessage(error.message);
       console.error("Error submitting form:", error);
+    } finally {
+      setLoading(false);
     }
   };
   
-  
+
 
 
 
@@ -165,10 +198,9 @@ export default function AddListingForm() {
             <div>
               <label className="block text-sm font-medium">Image URL</label>
               <input
-                type="text"
-                name="imageUrl"
-                value={form.imageUrl}
-                onChange={handleChange}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
                 className="w-full border border-gray-300 p-2 rounded"
               />
             </div>
@@ -241,10 +273,9 @@ export default function AddListingForm() {
             <div>
               <label className="block text-sm font-medium">Image URL</label>
               <input
-                type="text"
-                name="imageUrl"
-                value={form.imageUrl}
-                onChange={handleChange}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
                 className="w-full border border-gray-300 p-2 rounded"
               />
             </div>
@@ -318,10 +349,9 @@ export default function AddListingForm() {
             <div>
               <label className="block text-sm font-medium">Image URL</label>
               <input
-                type="text"
-                name="imageUrl"
-                value={form.imageUrl}
-                onChange={handleChange}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
                 className="w-full border border-gray-300 p-2 rounded"
               />
             </div>
@@ -383,10 +413,9 @@ export default function AddListingForm() {
             <div>
               <label className="block text-sm font-medium">Image URL</label>
               <input
-                type="text"
-                name="imageUrl"
-                value={form.imageUrl}
-                onChange={handleChange}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
                 className="w-full border border-gray-300 p-2 rounded"
               />
             </div>
@@ -492,11 +521,8 @@ export default function AddListingForm() {
             >
               Back
             </button>
-            <button
-              onClick={handleSubmit}
-              className="px-4 py-2 bg-red-600 m-2 text-white rounded"
-            >
-              Submit
+            <button onClick={handleSubmit} className={`py-2 px-4  ${loading ? "bg-gray-400" : "bg-red-600 text-white"}`} disabled={loading}>
+              {loading ? "Adding listing..." : "submit"}
             </button>
           </>
         )}

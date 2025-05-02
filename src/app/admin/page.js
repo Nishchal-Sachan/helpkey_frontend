@@ -72,7 +72,7 @@ export default function AdminDashboard() {
         },
         credentials: "include", // 👈 This is the fix
       });
-  
+
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
       const data = await res.json();
       if (!data.success) throw new Error(data.error || "Failed to fetch bookings");
@@ -83,8 +83,8 @@ export default function AdminDashboard() {
       setLoading((prev) => ({ ...prev, bookings: false }));
     }
   };
-  
-  
+
+
 
   const updateBookingStatus = async (bookingId, status) => {
     try {
@@ -94,18 +94,18 @@ export default function AdminDashboard() {
         body: JSON.stringify({ status }),
         credentials: "include", // 👈 Include cookie for auth
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to update booking status");
       }
-  
+
       console.log(`Booking ${bookingId} updated to ${status}`);
       await fetchBookings();
     } catch (error) {
       console.error("Error updating booking status:", error);
     }
   };
-  
+
 
   const handleLogout = async () => {
     try {
@@ -113,14 +113,14 @@ export default function AdminDashboard() {
         method: "POST",
         credentials: "include", // ⬅️ to send the cookie
       });
-  
+
       router.push("/admin/login");
     } catch (error) {
       console.error("Logout failed:", error);
       router.push("/admin/login"); // fallback redirect
     }
   };
-  
+
 
   return (
     <div>
@@ -168,15 +168,20 @@ export default function AdminDashboard() {
                       className="rounded-lg object-cover w-full h-auto"
                     />
                   ) : (
-                    <div className="w-full max-w-xs h-40 bg-gray-300 flex items-center justify-center rounded-lg">
-                      <span className="text-gray-600">No Image</span>
+                    <div className="w-full max-w-xs h-auto flex items-center justify-center">
+                      <Image
+                        src={'https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=1200'}
+                        width={200}
+                        height={100}
+                        className="rounded-lg object-cover w-full h-auto"
+                      />
                     </div>
                   )}
                 </div>
 
                 <h2 className="text-lg md:text-xl font-semibold mt-2 text-center">{listing.title}</h2>
                 <p className="text-gray-600 text-center">{listing.description}</p>
-                <p className="font-bold text-center">&#8377;{listing.price}</p>
+                <p className="font-bold text-center">&#8377;{JSON.parse(listing.details)?.price ?? "N/A"}</p>
 
                 <div className="mt-2 flex gap-2">
                   <button
