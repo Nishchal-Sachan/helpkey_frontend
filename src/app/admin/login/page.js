@@ -9,7 +9,7 @@ export default function AdminLogin() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const baseUrl = "http://localhost:5000/api";
+  const baseUrl = "https://helpkey-backend.onrender.com/api";
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };

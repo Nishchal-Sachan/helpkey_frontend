@@ -14,7 +14,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState({ listings: true, bookings: true });
   const [error, setError] = useState({ listings: null, bookings: null });
 
-  const baseUrl = "http://localhost:5000/api";
+  const baseUrl = "https://helpkey-backend.onrender.com/api";
   useEffect(() => {
     const checkAuth = async () => {
       try {
