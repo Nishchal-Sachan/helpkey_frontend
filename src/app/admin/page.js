@@ -133,7 +133,7 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${baseUrl}https://helpkey-backend.onrender.com/api/admin/logout`, {
+      await fetch(`${baseUrl}/admin/logout`, {
         method: "POST",
         credentials: "include", // ⬅️ to send the cookie
       });
@@ -241,6 +241,7 @@ export default function AdminDashboard() {
                 <p className="text-gray-600">Guest: {booking.guest_name}</p>
                 <p className="text-gray-600">Check-in: {booking.check_in}</p>
                 <p className="text-gray-600">Check-out: {booking.check_out}</p>
+                <p className="text-gray-600">Price: {booking.total_price}</p>
                 <p className="font-bold">Status: {booking.status}</p>
 
                 {booking.status === "Pending" && (
